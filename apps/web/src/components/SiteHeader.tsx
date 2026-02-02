@@ -26,7 +26,7 @@ export function SiteHeader({ orderUrl }: SiteHeaderProps) {
           href="/"
           className="flex items-center gap-3 text-lg font-semibold tracking-tight font-display"
         >
-          <Image src="/logo.PNG" alt="Tedeset Cafe" width={160} height={46} className="h-10 w-auto" />
+          <Image src="/logo.png" alt="Tedeset Cafe" width={160} height={46} className="h-10 w-auto" />
           <span>
             Tedeset Cafe <span className="font-sans">&amp;</span> Marketplace
           </span>
