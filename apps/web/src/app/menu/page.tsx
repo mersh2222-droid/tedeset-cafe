@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { MenuGrid } from "@/components/MenuGrid";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -85,7 +86,9 @@ export default async function MenuPage() {
           ))}
         </div>
         <div className="section-frame no-accent">
-          <MenuGrid items={items} />
+          <Suspense fallback={<div className="py-10 text-center text-sm text-muted-foreground">Loading menu…</div>}>
+            <MenuGrid items={items} />
+          </Suspense>
         </div>
         <div className="roast-banner">
           <div className="relative z-10 grid gap-6 p-6 md:grid-cols-[1.1fr_0.9fr] md:p-10">
