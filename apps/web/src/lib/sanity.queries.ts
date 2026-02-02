@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 import { client } from "@/lib/sanity.client";
 import type { HomePage, MenuItem, Product, SiteSettings } from "@/lib/sanity.types";
 
-const noStore = { cache: "no-store", next: { revalidate: 0 } };
+const noStore = { cache: "no-store" as const };
 
 const demoSiteSettings: SiteSettings = {
   businessName: "Tedeset Cafe and Marketplace",
