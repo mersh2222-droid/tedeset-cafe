@@ -18,7 +18,7 @@ const demoMenuItems: MenuItem[] = [
   {
     _id: "menu-espresso-1",
     name: "Signature Espresso",
-    category: "Espresso",
+    category: "Hot",
     description: "Rich, velvety espresso with caramelized notes.",
     price: 3.75,
     badges: ["House Favorite"],
@@ -40,7 +40,7 @@ const demoMenuItems: MenuItem[] = [
   {
     _id: "menu-tea-1",
     name: "Rose Black Tea",
-    category: "Tea",
+    category: "Hot",
     description: "Aromatic black tea with soft floral notes.",
     price: 4.25,
     badges: [],
