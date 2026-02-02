@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx"
+  }
+}
+

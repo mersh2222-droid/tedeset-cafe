@@ -1,0 +1,10 @@
+{"_type": "menuItem", "name": "Americano (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.00 - $4.25.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 1}
+{"_type": "menuItem", "name": "Cappuccino (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.25 - $4.25.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 2}
+{"_type": "menuItem", "name": "Caramel Latte (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.75 - $4.50.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 3}
+{"_type": "menuItem", "name": "Chili Latte Tea (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $2.95 - $4.25.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 4}
+{"_type": "menuItem", "name": "Coffee Latte (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.50 - $4.50.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 5}
+{"_type": "menuItem", "name": "Cold Brew (2 variations)", "category": "Iced", "description": "Available in-store Price range: $3.25 - $4.50.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 6}
+{"_type": "menuItem", "name": "Double Espresso", "category": "Espresso", "description": "Available in-store", "price": 2.95, "badges": ["Popular"], "available": true, "sortOrder": 7}
+{"_type": "menuItem", "name": "Ethiopian Roast Coffee", "category": "Espresso", "description": "Available in-store", "price": 9.5, "badges": ["Popular"], "available": true, "sortOrder": 8}
+{"_type": "menuItem", "name": "Macchiato (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.25 - $3.25.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 9}
+{"_type": "menuItem", "name": "Macchiato Latte (2 variations)", "category": "Espresso", "description": "Available in-store Price range: $3.50 - $4.50.", "price": null, "badges": ["Popular"], "available": true, "sortOrder": 10}

@@ -1,0 +1,10 @@
+node_modules
+.next
+.sanity
+.env
+.env.local
+.DS_Store
+dist
+.turbo
+coverage
+

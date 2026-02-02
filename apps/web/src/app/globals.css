@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 33% 97%;
+  --foreground: 222 35% 12%;
+  --primary: 24 38% 22%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 30 20% 94%;
+  --muted-foreground: 215 16% 38%;
+  --border: 20 14% 88%;
+  --accent: 38 55% 88%;
+  --accent-foreground: 222 35% 12%;
+  --radius: 1rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-feature-settings: "ss01" on, "ss02" on;
+  background-image:
+    radial-gradient(circle at top, rgba(245, 233, 214, 0.6), transparent 55%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.6), transparent 45%);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: rgba(124, 93, 66, 0.18);
+}
+
+main {
+  @apply relative z-10;
+}
+
+.page-shell {
+  @apply relative overflow-hidden;
+}
+
+.page-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.55), transparent 40%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.section {
+  @apply py-16 md:py-24;
+}
+
+.reveal {
+  @apply opacity-0 translate-y-3 transition duration-700 ease-out;
+}
+
+.reveal.is-visible {
+  @apply opacity-100 translate-y-0;
+}
+
+.section-frame {
+  @apply relative overflow-hidden rounded-[3rem] border border-border/60 bg-white/70 p-6 shadow-soft backdrop-blur;
+}
+
+.section-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.7), transparent 50%);
+  pointer-events: none;
+}
+
+.section-frame::after {
+  display: none;
+}
+
+.section-divider {
+  @apply my-10 flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-muted-foreground;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  @apply h-px flex-1 bg-primary/30;
+}
+
+.calligraphy-divider {
+  @apply flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-muted-foreground;
+}
+
+.calligraphy-divider::before,
+.calligraphy-divider::after {
+  content: "";
+  @apply h-px flex-1 bg-primary/20;
+}
+
+.calligraphy-divider span {
+  @apply font-display text-base tracking-[0.2em] text-primary/70;
+}
+
+.brand-stamp {
+  @apply inline-flex items-center justify-center rounded-full border border-primary/30 bg-white/70 px-4 py-2 text-[0.6rem] uppercase tracking-[0.4em] text-primary/80 shadow-sm backdrop-blur;
+}
+
+@keyframes roast-drift {
+  0% {
+    background-position: 0% 0%, 100% 20%;
+  }
+  100% {
+    background-position: 100% 100%, 0% 80%;
+  }
+}
+
+.roast-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3rem;
+  border: 1px solid hsl(var(--border) / 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
+  background-image: url("/roast-beans.PNG");
+  background-size: cover;
+  background-position: center;
+  animation: roast-pan 24s ease-in-out infinite alternate;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 1024px) {
+  .roast-banner {
+    background-size: 140%;
+    animation: roast-pan 18s ease-in-out infinite alternate;
+  }
+}
+
+@media (max-width: 640px) {
+  .roast-banner {
+    background-size: 160%;
+  }
+}
+
+.roast-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.12) 0.5px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.08) 0.8px, transparent 1.5px);
+  background-size: 18px 18px, 28px 28px;
+  opacity: 0.45;
+  animation: roast-drift 20s linear infinite;
+  pointer-events: none;
+}
+
+.roast-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.1));
+  pointer-events: none;
+}
+
+@keyframes roast-pan {
+  0% {
+    background-position: 45% 40%;
+  }
+  100% {
+    background-position: 55% 60%;
+  }
+}
+
+.card-glass {
+  @apply relative overflow-hidden rounded-[2.5rem] border border-border/70 bg-white/85 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-soft;
+}
+
+.card-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), transparent 55%);
+  pointer-events: none;
+}
+
