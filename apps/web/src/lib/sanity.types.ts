@@ -1,5 +1,7 @@
 export type ProductPriceType = "fixed" | "variable";
 
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
 export interface Product {
   _id: string;
   name: string;
@@ -7,7 +9,7 @@ export interface Product {
   priceType: ProductPriceType;
   price?: number | null;
   availabilityNote?: string | null;
-  images?: unknown[] | null;
+  images?: SanityImageSource[] | null;
   featured?: boolean | null;
   sortOrder?: number | null;
   slug: {
@@ -25,7 +27,7 @@ export interface MenuItem {
   price?: number | null;
   badges?: string[] | null;
   available?: boolean | null;
-  image?: unknown | null;
+  image?: SanityImageSource | null;
   sortOrder?: number | null;
 }
 
