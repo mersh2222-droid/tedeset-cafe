@@ -19,13 +19,32 @@ export function SiteFooter({
   hours,
   socialLinks
 }: SiteFooterProps) {
+  const phoneDigits = phone ? phone.replace(/\D/g, "") : null;
+  const phoneDial = phoneDigits
+    ? phoneDigits.length === 10
+      ? `1${phoneDigits}`
+      : phoneDigits
+    : null;
+  const phoneHref = phoneDial ? `tel:+${phoneDial}` : null;
+  const formattedPhone = phoneDigits
+    ? phoneDigits.length === 11 && phoneDigits.startsWith("1")
+      ? `+1 (${phoneDigits.slice(1, 4)}) ${phoneDigits.slice(4, 7)}-${phoneDigits.slice(7)}`
+      : phoneDigits.length === 10
+        ? `+1 (${phoneDigits.slice(0, 3)}) ${phoneDigits.slice(3, 6)}-${phoneDigits.slice(6)}`
+        : phone
+    : phone;
   const socials =
     socialLinks?.length
       ? socialLinks
       : [
-          { label: "Instagram", url: "https://instagram.com" },
-          { label: "Facebook", url: "https://facebook.com" },
-          { label: "TikTok", url: "https://tiktok.com" }
+          {
+            label: "Instagram",
+            url: "https://www.instagram.com/tedesetmarketandcafe?igsh=MWNibzRtOGxrdDlkNw%3D%3D&utm_source=qr"
+          },
+          {
+            label: "Facebook",
+            url: "https://www.facebook.com/share/1FYA2bVSLK/?mibextid=wwXIfr"
+          }
         ];
 
   return (
@@ -48,10 +67,104 @@ export function SiteFooter({
             ))}
           </div>
         </Reveal>
-        <Reveal className="space-y-3 text-sm text-muted-foreground">
-          {phone ? <p>Phone: {phone}</p> : null}
-          {email ? <p>Email: {email}</p> : null}
-          {hours ? <p>Hours: {hours}</p> : null}
+        <Reveal className="space-y-4">
+          <div className="card-glass group space-y-4 p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-white/70 text-primary shadow-sm transition group-hover:scale-105">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.636a1.5 1.5 0 0 0-1.019-1.416l-3.122-1.041a1.5 1.5 0 0 0-1.662.517l-.843 1.125a12.03 12.03 0 0 1-5.355-5.355l1.125-.843a1.5 1.5 0 0 0 .517-1.662L7.302 4.77A1.5 1.5 0 0 0 5.886 3.75H3.75a1.5 1.5 0 0 0-1.5 1.5v1.5Z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Phone</p>
+                {formattedPhone ? (
+                  <p className="text-base font-semibold text-foreground">{formattedPhone}</p>
+                ) : (
+                  <p className="text-base font-semibold text-foreground">Available on request</p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+              {email ? (
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-white/70 text-muted-foreground">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21.75 6.75v10.5a1.5 1.5 0 0 1-1.5 1.5h-16.5a1.5 1.5 0 0 1-1.5-1.5V6.75m19.5 0A1.5 1.5 0 0 0 20.25 5.25h-16.5A1.5 1.5 0 0 0 2.25 6.75m19.5 0-9.75 6-9.75-6"
+                      />
+                    </svg>
+                  </span>
+                  <span>{email}</span>
+                </div>
+              ) : null}
+              {hours ? (
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-white/70 text-muted-foreground">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </span>
+                  <span>{hours}</span>
+                </div>
+              ) : null}
+            </div>
+            {phoneHref ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href={phoneHref}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary-foreground shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.636a1.5 1.5 0 0 0-1.019-1.416l-3.122-1.041a1.5 1.5 0 0 0-1.662.517l-.843 1.125a12.03 12.03 0 0 1-5.355-5.355l1.125-.843a1.5 1.5 0 0 0 .517-1.662L7.302 4.77A1.5 1.5 0 0 0 5.886 3.75H3.75a1.5 1.5 0 0 0-1.5 1.5v1.5Z"
+                    />
+                  </svg>
+                  Call now
+                </Link>
+                <span className="text-xs text-muted-foreground">Tap to connect instantly</span>
+              </div>
+            ) : null}
+          </div>
         </Reveal>
         <Reveal className="space-y-3 text-sm text-muted-foreground">
           <p className="font-medium text-foreground">Explore</p>

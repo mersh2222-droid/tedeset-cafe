@@ -182,3 +182,7 @@ main {
   pointer-events: none;
 }
 
+.font-sf-pro {
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+

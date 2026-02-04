@@ -8,10 +8,20 @@ const demoSiteSettings: SiteSettings = {
   businessName: "Tedeset Cafe and Marketplace",
   address: "10240 NE Halsey St, Portland, OR 97220",
   phone: "(503) 555-0142",
-  email: "hello@tedesetcafe.com",
+  email: "tedesetmarketcafe@gmail.com",
   hours: "Daily · 9am–9pm",
   doorDashUrl: "https://example.com",
-  announcementText: "Now serving seasonal winter lattes."
+  announcementText: "Now serving seasonal winter lattes.",
+  socialLinks: [
+    {
+      label: "Instagram",
+      url: "https://www.instagram.com/tedesetmarketandcafe?igsh=MWNibzRtOGxrdDlkNw%3D%3D&utm_source=qr"
+    },
+    {
+      label: "Facebook",
+      url: "https://www.facebook.com/share/1FYA2bVSLK/?mibextid=wwXIfr"
+    }
+  ]
 };
 
 const demoMenuItems: MenuItem[] = [

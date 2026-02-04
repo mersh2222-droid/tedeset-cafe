@@ -30,9 +30,14 @@ export function Hero({
     socialLinks?.length
       ? socialLinks
       : [
-          { label: "Instagram", url: "https://instagram.com" },
-          { label: "Facebook", url: "https://facebook.com" },
-          { label: "TikTok", url: "https://tiktok.com" }
+          {
+            label: "Instagram",
+            url: "https://www.instagram.com/tedesetmarketandcafe?igsh=MWNibzRtOGxrdDlkNw%3D%3D&utm_source=qr"
+          },
+          {
+            label: "Facebook",
+            url: "https://www.facebook.com/share/1FYA2bVSLK/?mibextid=wwXIfr"
+          }
         ];
 
   const iconFor = (label: string) => {

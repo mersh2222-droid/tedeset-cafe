@@ -24,6 +24,7 @@ export default async function MenuPage() {
               <SectionHeader
                 title="Cafe Menu"
                 description="Crafted espresso, iced beverages, tea blends, and freshly baked pastries."
+                titleClassName="text-white"
                 descriptionClassName="text-white/95 drop-shadow-sm font-bold"
               />
               <div className="calligraphy-divider">
@@ -31,7 +32,7 @@ export default async function MenuPage() {
                   Menu Atelier
                 </span>
               </div>
-              <p className="text-sm text-white/95 drop-shadow-sm font-bold">
+              <p className="text-sm text-white/95 drop-shadow-sm font-bold font-sf-pro">
                 Our menu is curated for slow mornings and intentional pauses, blending
                 Ethiopian coffee heritage with modern cafe craft.
               </p>
@@ -93,13 +94,13 @@ export default async function MenuPage() {
         <div className="roast-banner">
           <div className="relative z-10 grid gap-6 p-6 md:grid-cols-[1.1fr_0.9fr] md:p-10">
             <div className="space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-foreground/80">
+              <p className="text-xs uppercase tracking-[0.35em] text-white/80">
                 Roasted Daily
               </p>
-              <h3 className="text-2xl font-semibold font-display text-foreground">
+              <h3 className="text-2xl font-semibold font-display text-white">
                 Our specialty is our original Ethiopian coffee.
               </h3>
-              <p className="text-sm text-white/95 drop-shadow-sm font-bold">
+              <p className="text-sm text-white/95 drop-shadow-sm font-bold font-sf-pro">
                 Small-batch roasts, curated for depth and sweetness. Ask for tasting
                 notes or a traditional ceremony pour.
               </p>

@@ -132,7 +132,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     href={
                       settings?.email
                         ? `mailto:${settings.email}`
-                        : "mailto:hello@tedesetcafe.com"
+                        : "mailto:tedesetmarketcafe@gmail.com"
                     }
                   >
                     Email

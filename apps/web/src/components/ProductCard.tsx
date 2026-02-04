@@ -26,7 +26,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         )}
       >
         <Link href={`/marketplace/${product.slug.current}`} className="block">
-          <div className="relative h-52 w-full overflow-hidden bg-accent">
+          <div className="relative h-52 w-full overflow-hidden rounded-[2.5rem] bg-accent">
             {image ? (
               <Image
                 src={urlFor(image).width(800).height(600).url()}
@@ -39,7 +39,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 Image coming soon
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
           </div>
         </Link>
         <div className="flex flex-1 flex-col gap-4 p-6">

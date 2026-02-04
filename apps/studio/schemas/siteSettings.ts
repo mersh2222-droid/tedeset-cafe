@@ -25,7 +25,8 @@ export default defineType({
     defineField({
       name: "email",
       title: "Email",
-      type: "string"
+      type: "string",
+      initialValue: "tedesetmarketcafe@gmail.com"
     }),
     defineField({
       name: "hours",
