@@ -164,24 +164,51 @@ export function SiteFooter({
                 <span className="text-xs text-muted-foreground">Tap to connect instantly</span>
               </div>
             ) : null}
+            <Link
+              href="/faq"
+              className="group inline-flex w-full items-center justify-between gap-3 rounded-2xl border border-border/70 bg-white/70 px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-foreground shadow-sm transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-white hover:shadow-md"
+            >
+              <span className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-border/70 bg-white text-[0.6rem] font-semibold text-foreground transition group-hover:border-primary/50 group-hover:bg-primary/5">
+                  ?
+                </span>
+                FAQ
+              </span>
+              <span className="text-xs text-muted-foreground transition group-hover:text-foreground">
+                Quick answers →
+              </span>
+            </Link>
           </div>
         </Reveal>
-        <Reveal className="space-y-3 text-sm text-muted-foreground">
-          <p className="font-medium text-foreground">Explore</p>
-          <nav className="flex flex-col gap-2">
-            <Link href="/menu" className="hover:text-foreground">
-              Menu
-            </Link>
-            <Link href="/marketplace" className="hover:text-foreground">
-              Marketplace
-            </Link>
-            <Link href="/order" className="hover:text-foreground">
-              Order Online
-            </Link>
-            <Link href="/contact" className="hover:text-foreground">
-              Contact
-            </Link>
-          </nav>
+        <Reveal className="md:justify-self-end">
+          <div className="card-glass group relative overflow-hidden space-y-4 p-6 text-sm text-muted-foreground">
+            <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
+              <div className="absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.75),transparent_55%)]" />
+            </div>
+            <p className="relative font-medium text-foreground">Explore</p>
+            <nav className="relative flex flex-col gap-2 items-start">
+              {[
+                { label: "Menu", href: "/menu" },
+                { label: "Marketplace", href: "/marketplace" },
+                { label: "Order Online", href: "/order" },
+                { label: "Contact", href: "/contact" }
+              ].map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="group/link flex w-full items-center justify-between gap-3 rounded-full border border-transparent px-3 py-2 transition hover:border-border/70 hover:bg-white/70 hover:text-foreground"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-primary/60 transition group-hover/link:scale-110" />
+                    <span>{item.label}</span>
+                  </span>
+                  <span className="text-xs text-muted-foreground transition group-hover/link:text-foreground">
+                    →
+                  </span>
+                </Link>
+              ))}
+            </nav>
+          </div>
         </Reveal>
       </div>
       <Separator />
