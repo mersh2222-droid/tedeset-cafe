@@ -12,13 +12,18 @@ export const metadata: Metadata = {
   description: "Get in touch with Tedeset Cafe and Marketplace."
 };
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams
+}: {
+  searchParams?: { status?: string };
+}) {
   const settings = await getSiteSettings();
   const businessName =
     settings?.businessName || "Tedeset Cafe and Marketplace";
   const address =
     settings?.address || "10240 NE Halsey St, Portland, OR 97220";
   const mapQuery = encodeURIComponent(address);
+  const status = searchParams?.status;
 
   return (
     <section className="section">
@@ -77,12 +82,21 @@ export default async function ContactPage() {
             <Reveal className="space-y-4 rounded-[2.5rem] border border-border/70 bg-white/85 p-6 shadow-sm backdrop-blur">
             <h3 className="text-lg font-semibold">Send a message</h3>
             <p className="text-sm text-muted-foreground">
-              This form uses Formspree. Replace the placeholder endpoint with your
-              live Formspree URL.
+              Send us a note and our team will respond soon.
             </p>
+            {status === "success" ? (
+              <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-900">
+                Thanks for reaching out. Your message has been sent.
+              </div>
+            ) : null}
+            {status === "error" ? (
+              <div className="rounded-2xl border border-amber-200/70 bg-amber-50/60 px-4 py-3 text-sm text-amber-900">
+                Something went wrong. Please try again or contact us directly.
+              </div>
+            ) : null}
             <form
               className="space-y-4"
-              action="https://formspree.io/f/your-form-id"
+              action="/api/contact"
               method="POST"
             >
               <Input name="name" placeholder="Your name" required />
