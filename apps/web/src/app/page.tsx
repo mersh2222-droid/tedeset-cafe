@@ -24,10 +24,14 @@ export default async function HomePage() {
       ? home.featuredMenuItems
       : (await getMenuItems()).slice(0, 4);
 
-  const featuredProducts =
-    home?.featuredProducts?.length
-      ? home.featuredProducts
-      : (await getProducts()).slice(0, 6);
+  const allProducts = await getProducts();
+  const featuredProductsSource =
+    home?.featuredProducts?.length ? home.featuredProducts : allProducts;
+  const featuredProducts = (
+    featuredProductsSource.filter((product) => product.images?.length).length > 0
+      ? featuredProductsSource.filter((product) => product.images?.length)
+      : allProducts.filter((product) => product.images?.length)
+  ).slice(0, 6);
 
   const showFeaturedMenu = home?.showFeaturedMenu ?? true;
   const showFeaturedProducts = home?.showFeaturedProducts ?? true;
@@ -93,7 +97,7 @@ export default async function HomePage() {
               </div>
               <div className="mt-8 flex">
                 <Button asChild variant="outline">
-                  <Link href="/marketplace">Browse Marketplace</Link>
+                  <Link href="/marketplace">View Full Marketplace</Link>
                 </Button>
               </div>
             </div>

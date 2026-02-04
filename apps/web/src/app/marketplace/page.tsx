@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 export default async function MarketplacePage() {
   const products = await getProducts();
+  const productsWithImages = products.filter((product) => product.images?.length);
 
   return (
     <section className="section">
@@ -68,7 +69,7 @@ export default async function MarketplacePage() {
           </div>
         </div>
         <div className="section-frame">
-          <MarketplaceGrid products={products} />
+          <MarketplaceGrid products={productsWithImages.length ? productsWithImages : products} />
         </div>
       </div>
     </section>
