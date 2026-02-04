@@ -13,8 +13,8 @@ export async function POST(request: Request) {
   const message = String(formData.get("message") || "").trim();
 
   const apiKey = requiredEnv(process.env.BREVO_API_KEY);
-  const senderEmail = requiredEnv(process.env.BREVO_SENDER_EMAIL) || email;
-  const senderName = requiredEnv(process.env.BREVO_SENDER_NAME) || name || "Website Contact";
+  const senderEmail = requiredEnv(process.env.BREVO_SENDER_EMAIL);
+  const senderName = requiredEnv(process.env.BREVO_SENDER_NAME) || "Tedeset Market & Cafe";
   const recipientEmail =
     requiredEnv(process.env.BREVO_RECIPIENT_EMAIL) || "tedesetmarketcafe@gmail.com";
 
@@ -53,6 +53,8 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Brevo contact error response", response.status, errorBody);
       baseUrl.searchParams.set("status", "error");
       return NextResponse.redirect(baseUrl, { status: 303 });
     }
