@@ -35,9 +35,6 @@ export default async function OrderPage() {
                 Order on DoorDash
               </Link>
             </Button>
-            <p className="text-xs text-muted-foreground">
-              Update the DoorDash URL in Sanity Studio under Site Settings.
-            </p>
             </Reveal>
             <Reveal className="space-y-4 rounded-[2.5rem] border border-border/70 bg-white/85 p-6 shadow-sm backdrop-blur">
             <h3 className="text-lg font-semibold">Pickup & Delivery</h3>
