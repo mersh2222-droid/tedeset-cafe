@@ -16,7 +16,7 @@ export function SiteHeader({ orderUrl, phone }: SiteHeaderProps) {
     { label: "Home", href: "/" },
     { label: "Menu", href: "/menu" },
     { label: "Marketplace", href: "/marketplace" },
-    { label: "Order Online", href: phoneHref || "/order" },
+    { label: "Order Online", href: "/order" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" }
   ];
