@@ -29,7 +29,9 @@ export function PopularCarousel({ items }: PopularCarouselProps) {
                 {item.description || "Small-batch favorite, crafted daily."}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                <Badge variant="premium">Popular</Badge>
+                {item.badges?.some((badge) => badge.toLowerCase() === "popular") ? null : (
+                  <Badge className="bg-black text-white">Popular</Badge>
+                )}
                 {item.badges?.slice(0, 1).map((badge) => (
                   <Badge key={badge} variant="subtle">
                     {badge}

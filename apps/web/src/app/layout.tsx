@@ -56,7 +56,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans">
-        <SiteHeader orderUrl={settings?.doorDashUrl} />
+        <SiteHeader orderUrl={settings?.doorDashUrl} phone={settings?.phone} />
         <main className="page-shell">{children}</main>
         <SiteFooter
           businessName={businessName}

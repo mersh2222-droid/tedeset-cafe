@@ -46,18 +46,6 @@ export default async function HomePage() {
         address={settings?.address}
         socialLinks={settings?.socialLinks}
       />
-      <section className="section">
-        <div className="container">
-          <div className="section-divider">Popular</div>
-          <div className="section-frame">
-            <SectionHeader
-              title="Popular This Week"
-              description="Small-batch favorites and seasonal highlights from our baristas."
-            />
-            <PopularCarousel items={featuredMenuItems} />
-          </div>
-        </div>
-      </section>
       {showFeaturedMenu ? (
         <section className="section bg-white">
           <div className="container">

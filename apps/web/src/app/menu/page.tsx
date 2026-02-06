@@ -55,7 +55,7 @@ export default async function MenuPage() {
             </div>
           </div>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="hidden gap-6 md:grid md:grid-cols-3">
           {[
             {
               title: "Hot Rituals",

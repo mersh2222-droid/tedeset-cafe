@@ -16,9 +16,11 @@ const navItems = [
 
 interface SiteHeaderProps {
   orderUrl?: string | null;
+  phone?: string | null;
 }
 
-export function SiteHeader({ orderUrl }: SiteHeaderProps) {
+export function SiteHeader({ orderUrl, phone }: SiteHeaderProps) {
+  const phoneHref = phone ? `tel:${phone.replace(/\D/g, "")}` : null;
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center justify-between gap-6">
@@ -45,7 +47,7 @@ export function SiteHeader({ orderUrl }: SiteHeaderProps) {
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild variant="accent" className="hidden md:inline-flex">
-            <Link href={orderUrl || "/order"}>Order Online</Link>
+            <Link href={phoneHref || orderUrl || "/order"}>Order Online</Link>
           </Button>
           <Sheet>
             <SheetTrigger asChild>
@@ -81,7 +83,7 @@ export function SiteHeader({ orderUrl }: SiteHeaderProps) {
                 </nav>
                 <SheetClose asChild>
                   <Button asChild className="w-full">
-                    <Link href={orderUrl || "/order"}>Order Online</Link>
+                    <Link href={phoneHref || orderUrl || "/order"}>Order Online</Link>
                   </Button>
                 </SheetClose>
                 <div className="rounded-3xl border border-border/70 bg-white/70 p-4 text-xs text-muted-foreground">
