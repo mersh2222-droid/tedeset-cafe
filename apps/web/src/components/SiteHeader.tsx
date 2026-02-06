@@ -5,15 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Menu", href: "/menu" },
-  { label: "Marketplace", href: "/marketplace" },
-  { label: "Order Online", href: "/order" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" }
-];
-
 interface SiteHeaderProps {
   orderUrl?: string | null;
   phone?: string | null;
@@ -21,6 +12,14 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ orderUrl, phone }: SiteHeaderProps) {
   const phoneHref = phone ? `tel:${phone.replace(/\D/g, "")}` : null;
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Menu", href: "/menu" },
+    { label: "Marketplace", href: "/marketplace" },
+    { label: "Order Online", href: phoneHref || "/order" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" }
+  ];
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/80 backdrop-blur">
       <div className="container flex h-16 items-center justify-between gap-6">

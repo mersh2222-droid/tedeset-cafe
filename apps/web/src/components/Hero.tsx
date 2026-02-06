@@ -10,6 +10,7 @@ interface HeroProps {
   subheadline?: string | null;
   imageUrl?: string | null;
   orderUrl?: string | null;
+  phone?: string | null;
   address?: string | null;
   socialLinks?: { label: string; url: string }[] | null;
 }
@@ -19,12 +20,14 @@ export function Hero({
   subheadline,
   imageUrl,
   orderUrl,
+  phone,
   address,
   socialLinks
 }: HeroProps) {
   const mapsUrl = address
     ? `https://www.google.com/maps?q=${encodeURIComponent(address)}`
     : "https://www.google.com/maps?q=10240%20NE%20Halsey%20St,%20Portland,%20OR%2097220";
+  const phoneHref = phone ? `tel:${phone.replace(/\D/g, "")}` : null;
 
   const socials =
     socialLinks?.length
@@ -118,7 +121,7 @@ export function Hero({
             ) : null}
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" variant="accent">
-                <Link href={orderUrl || "/order"}>Order Online</Link>
+                <Link href={phoneHref || orderUrl || "/order"}>Order Online</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link href="/menu">Explore Menu</Link>

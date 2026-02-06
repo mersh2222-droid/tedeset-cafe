@@ -66,7 +66,7 @@ export default async function RootLayout({
           hours={settings?.hours}
           socialLinks={settings?.socialLinks}
         />
-        <StickyOrderButton orderUrl={settings?.doorDashUrl} />
+        <StickyOrderButton orderUrl={settings?.doorDashUrl} phone={settings?.phone} />
       </body>
     </html>
   );

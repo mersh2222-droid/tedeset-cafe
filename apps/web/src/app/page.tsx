@@ -43,6 +43,7 @@ export default async function HomePage() {
         subheadline={heroSubheadline}
         imageUrl={home?.heroImage ? urlFor(home.heroImage).width(1200).height(900).url() : undefined}
         orderUrl={settings?.doorDashUrl}
+        phone={settings?.phone}
         address={settings?.address}
         socialLinks={settings?.socialLinks}
       />

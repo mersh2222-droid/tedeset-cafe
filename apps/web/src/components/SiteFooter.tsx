@@ -190,7 +190,7 @@ export function SiteFooter({
               {[
                 { label: "Menu", href: "/menu" },
                 { label: "Marketplace", href: "/marketplace" },
-                { label: "Order Online", href: "/order" },
+                { label: "Order Online", href: phoneHref || "/order" },
                 { label: "Contact", href: "/contact" }
               ].map((item) => (
                 <Link
