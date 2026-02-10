@@ -68,6 +68,182 @@ const demoMenuItems: MenuItem[] = [
     available: true,
     image: null,
     sortOrder: 4
+  },
+  {
+    _id: "menu-pastry-2",
+    name: "Butter Croissant",
+    category: "Pastries",
+    description: "Classic French laminated dough, flaky and buttery.",
+    price: 4.25,
+    badges: ["Croissants"],
+    available: true,
+    image: null,
+    sortOrder: 5
+  },
+  {
+    _id: "menu-pastry-3",
+    name: "Pain au Chocolat",
+    category: "Pastries",
+    description: "Dark chocolate batons wrapped in croissant dough.",
+    price: 5.5,
+    badges: ["Croissants"],
+    available: true,
+    image: null,
+    sortOrder: 6
+  },
+  {
+    _id: "menu-pastry-4",
+    name: "Almond Croissant",
+    category: "Pastries",
+    description: "Twice-baked with frangipane filling and almonds.",
+    price: 6,
+    badges: ["Croissants"],
+    available: true,
+    image: null,
+    sortOrder: 7
+  },
+  {
+    _id: "menu-pastry-5",
+    name: "Fruit Danish",
+    category: "Pastries",
+    description: "Seasonal local fruit, rotating selections.",
+    price: 5.5,
+    badges: ["Danishes"],
+    available: true,
+    image: null,
+    sortOrder: 8
+  },
+  {
+    _id: "menu-pastry-6",
+    name: "Cheese Danish",
+    category: "Pastries",
+    description: "Sweet cream cheese filling with lemon zest.",
+    price: 5,
+    badges: ["Danishes"],
+    available: true,
+    image: null,
+    sortOrder: 9
+  },
+  {
+    _id: "menu-pastry-7",
+    name: "Savory Danish",
+    category: "Pastries",
+    description: "Leek, parmesan, or seasonal vegetable filling.",
+    price: 6.5,
+    badges: ["Danishes"],
+    available: true,
+    image: null,
+    sortOrder: 10
+  },
+  {
+    _id: "menu-pastry-8",
+    name: "Hand-Rolled Bagel",
+    category: "Pastries",
+    description: "Plain, sesame, poppy, or everything.",
+    price: 3,
+    badges: ["Bagels"],
+    available: true,
+    image: null,
+    sortOrder: 11
+  },
+  {
+    _id: "menu-pastry-9",
+    name: "Bagel & Schmear",
+    category: "Pastries",
+    description: "Toasted with plain or herbed cream cheese.",
+    price: 5.5,
+    badges: ["Bagels"],
+    available: true,
+    image: null,
+    sortOrder: 12
+  },
+  {
+    _id: "menu-pastry-10",
+    name: "Classic Muffin",
+    category: "Pastries",
+    description: "Blueberry, lemon poppyseed, or bran.",
+    price: 4.25,
+    badges: ["Muffins"],
+    available: true,
+    image: null,
+    sortOrder: 13
+  },
+  {
+    _id: "menu-pastry-11",
+    name: "Premium Muffin",
+    category: "Pastries",
+    description: "Gluten-free, vegan, or morning glory.",
+    price: 5.25,
+    badges: ["Muffins"],
+    available: true,
+    image: null,
+    sortOrder: 14
+  },
+  {
+    _id: "menu-pastry-12",
+    name: "Raised Glazed Donut",
+    category: "Pastries",
+    description: "Classic yeast donut with vanilla or maple glaze.",
+    price: 3,
+    badges: ["Donuts"],
+    available: true,
+    image: null,
+    sortOrder: 15
+  },
+  {
+    _id: "menu-pastry-13",
+    name: "Old Fashioned Donut",
+    category: "Pastries",
+    description: "Cake donut with crunchy edges and glaze.",
+    price: 3.25,
+    badges: ["Donuts"],
+    available: true,
+    image: null,
+    sortOrder: 16
+  },
+  {
+    _id: "menu-pastry-14",
+    name: "Artisan Filled Donut",
+    category: "Pastries",
+    description: "Brioche dough with curd filling or toppings.",
+    price: 5.5,
+    badges: ["Donuts"],
+    available: true,
+    image: null,
+    sortOrder: 17
+  },
+  {
+    _id: "menu-pastry-15",
+    name: "Buttermilk Scone",
+    category: "Pastries",
+    description: "Current/oat or cheddar/chive, baked daily.",
+    price: 4.5,
+    badges: ["Classics"],
+    available: true,
+    image: null,
+    sortOrder: 18
+  },
+  {
+    _id: "menu-pastry-16",
+    name: "Cinnamon Roll",
+    category: "Pastries",
+    description: "Brioche dough with cream cheese icing.",
+    price: 6,
+    badges: ["Classics"],
+    available: true,
+    image: null,
+    sortOrder: 19
+  },
+  {
+    _id: "menu-pastry-17",
+    name: "Sea Salt Cookie",
+    category: "Pastries",
+    description: "Large chocolate chip with fleur de sel.",
+    price: 4,
+    badges: ["Classics"],
+    available: true,
+    image: null,
+    sortOrder: 20
   }
 ];
 

@@ -106,7 +106,7 @@ export function Hero({
         </div>
         <div className="space-y-6 text-left md:space-y-8">
           <Reveal className="space-y-5">
-            <div className="flex items-center gap-6 text-white/70">
+            <div className="flex flex-wrap items-center gap-6 text-white/70">
               <span className="text-[0.6rem] uppercase tracking-[0.5em]">Tedeset</span>
               <span className="h-px w-16 bg-white/30" />
               <span className="text-[0.6rem] uppercase tracking-[0.5em]">Cafe & Marketplace</span>
@@ -119,6 +119,33 @@ export function Hero({
                 {subheadline}
               </p>
             ) : null}
+            <div className="inline-flex">
+              <div className="group relative rounded-full bg-gradient-to-r from-white/70 via-white/20 to-white/5 p-[1px]">
+                <div className="absolute -inset-1 rounded-full bg-white/20 blur-xl opacity-0 transition duration-500 group-hover:opacity-100" />
+                <div className="relative flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[0.7rem] uppercase tracking-[0.3em] text-white shadow-soft backdrop-blur">
+                  <span className="relative flex h-5 w-5 items-center justify-center">
+                    <span className="absolute inset-0 rounded-full border border-white/30" />
+                    <span className="absolute inset-0 rounded-full border border-white/20 blur-[2px]" />
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4 text-white/90"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6.4 10.6a8 8 0 0 1 11.2 0M3 7.2a12 12 0 0 1 18 0M9.8 14.2a3.2 3.2 0 0 1 4.4 0M12 18h.01"
+                      />
+                    </svg>
+                  </span>
+                  Free WiFi available
+                  <span className="h-1 w-1 rounded-full bg-white/70" />
+                </div>
+              </div>
+            </div>
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" variant="accent">
                 <Link href={phoneHref || orderUrl || "/order"}>Order Online</Link>
@@ -159,7 +186,7 @@ export function Hero({
             ))}
           </Reveal>
         </div>
-        <div className="relative space-y-4 md:space-y-5">
+        <div className="relative space-y-4 md:space-y-5 mt-14 md:mt-0">
           <Reveal className="rounded-[2rem] border border-white/30 bg-white/10 p-4 text-white shadow-soft backdrop-blur sm:rounded-[2.5rem] sm:p-6">
             <div className="flex items-center justify-between gap-4 text-xs uppercase tracking-[0.2em] text-white/70">
               <span>Visit us</span>
@@ -202,7 +229,7 @@ export function Hero({
               </Button>
             </div>
           </Reveal>
-          <Reveal className="rounded-[2rem] border border-white/30 bg-white/10 p-4 text-white/80 backdrop-blur sm:rounded-[2.5rem] sm:p-5">
+          <Reveal className="hidden rounded-[2rem] border border-white/30 bg-white/10 p-4 text-white/80 backdrop-blur sm:block sm:rounded-[2.5rem] sm:p-5">
             <p className="text-xs uppercase tracking-[0.35em]">Cafe Signature</p>
             <p className="mt-2 text-xs text-white/80 sm:text-sm">
               Ethiopian-inspired coffee rituals paired with curated pantry staples.
