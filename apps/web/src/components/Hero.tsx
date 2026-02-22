@@ -106,10 +106,13 @@ export function Hero({
         </div>
         <div className="space-y-6 text-left md:space-y-8">
           <Reveal className="space-y-5">
-            <div className="flex flex-wrap items-center gap-6 text-white/70">
-              <span className="text-[0.6rem] uppercase tracking-[0.5em]">Tedeset</span>
-              <span className="h-px w-16 bg-white/30" />
-              <span className="text-[0.6rem] uppercase tracking-[0.5em]">Cafe & Marketplace</span>
+            <div className="flex flex-wrap items-center gap-3 text-white/80">
+              <span className="brand-shimmer text-sm font-semibold uppercase tracking-[0.45em] bg-gradient-to-r from-amber-200 via-rose-200 to-emerald-200 bg-clip-text text-transparent drop-shadow">
+                Tedeset
+              </span>
+              <span className="brand-shimmer text-sm uppercase tracking-[0.35em] bg-gradient-to-r from-white/90 via-white/50 to-white/90 bg-clip-text text-transparent">
+                Cafe <span className="mx-2 font-sans text-white/40">&amp;</span> Marketplace
+              </span>
             </div>
             <h1 className="text-4xl font-semibold leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-7xl font-display">
               {headline}
@@ -119,7 +122,7 @@ export function Hero({
                 {subheadline}
               </p>
             ) : null}
-            <div className="inline-flex">
+            <div className="flex flex-wrap items-center gap-3">
               <div className="group relative rounded-full bg-gradient-to-r from-white/70 via-white/20 to-white/5 p-[1px]">
                 <div className="absolute -inset-1 rounded-full bg-white/20 blur-xl opacity-0 transition duration-500 group-hover:opacity-100" />
                 <div className="relative flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 text-[0.7rem] uppercase tracking-[0.3em] text-white shadow-soft backdrop-blur">
@@ -154,19 +157,32 @@ export function Hero({
                 <Link href="/menu">Explore Menu</Link>
               </Button>
             </div>
-          </Reveal>
-          <Reveal className="hidden gap-3 rounded-[1.5rem] border border-white/25 bg-white/10 p-3 text-[0.65rem] text-white/80 backdrop-blur sm:grid sm:grid-cols-3 sm:rounded-[2rem] sm:p-4 sm:text-xs">
-            <div>
-              <p className="uppercase tracking-[0.3em] text-white/60">Roasts</p>
-              <p className="mt-2 text-[0.7rem] sm:text-sm">Ethiopian heritage blends</p>
-            </div>
-            <div>
-              <p className="uppercase tracking-[0.3em] text-white/60">Pastries</p>
-              <p className="mt-2 text-[0.7rem] sm:text-sm">Fresh daily bakes</p>
-            </div>
-            <div>
-              <p className="uppercase tracking-[0.3em] text-white/60">Goods</p>
-              <p className="mt-2 text-[0.7rem] sm:text-sm">Curated pantry staples</p>
+            <div className="inline-flex">
+              <div className="relative rounded-full bg-gradient-to-r from-amber-200/80 via-rose-200/70 to-emerald-200/80 p-[1px]">
+                <div className="absolute -inset-1 rounded-full bg-amber-100/20 blur-xl opacity-60" />
+                <div className="relative flex items-center gap-2 rounded-full bg-black/55 px-4 py-2 text-[0.65rem] uppercase tracking-[0.32em] text-white shadow-soft backdrop-blur">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/20 bg-white/10">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4 text-white/90"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4.5 8.25h15m-12.75 7.5h10.5M8.25 8.25a3.75 3.75 0 1 0 7.5 0"
+                      />
+                    </svg>
+                  </span>
+                  <span className="font-display text-white/90">Catering</span>
+                  <span className="brand-shimmer bg-gradient-to-r from-white/95 via-white/60 to-white/95 bg-clip-text text-transparent">
+                    Events & Weddings
+                  </span>
+                </div>
+              </div>
             </div>
           </Reveal>
           <Reveal className="flex items-center gap-3 md:hidden">
@@ -229,11 +245,19 @@ export function Hero({
               </Button>
             </div>
           </Reveal>
-          <Reveal className="hidden rounded-[2rem] border border-white/30 bg-white/10 p-4 text-white/80 backdrop-blur sm:block sm:rounded-[2.5rem] sm:p-5">
-            <p className="text-xs uppercase tracking-[0.35em]">Cafe Signature</p>
-            <p className="mt-2 text-xs text-white/80 sm:text-sm">
-              Ethiopian-inspired coffee rituals paired with curated pantry staples.
-            </p>
+          <Reveal className="hidden gap-3 rounded-[2rem] border border-white/25 bg-white/10 p-4 text-[0.65rem] text-white/80 backdrop-blur sm:grid sm:grid-cols-3 sm:rounded-[2.5rem] sm:p-5 sm:text-xs">
+            <div>
+              <p className="uppercase tracking-[0.3em] text-white/60">Roasts</p>
+              <p className="mt-2 text-[0.7rem] sm:text-sm">Ethiopian heritage blends</p>
+            </div>
+            <div>
+              <p className="uppercase tracking-[0.3em] text-white/60">Pastries</p>
+              <p className="mt-2 text-[0.7rem] sm:text-sm">Fresh daily bakes</p>
+            </div>
+            <div>
+              <p className="uppercase tracking-[0.3em] text-white/60">Goods</p>
+              <p className="mt-2 text-[0.7rem] sm:text-sm">Curated pantry staples</p>
+            </div>
           </Reveal>
         </div>
       </div>

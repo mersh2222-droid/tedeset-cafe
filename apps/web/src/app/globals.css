@@ -170,6 +170,21 @@ main {
   }
 }
 
+@keyframes brand-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.brand-shimmer {
+  background-size: 200% 100%;
+  animation: brand-shimmer 8s linear infinite;
+  text-shadow: 0 0 14px rgba(255, 235, 210, 0.2);
+}
+
 .card-glass {
   @apply relative overflow-hidden rounded-[2.5rem] border border-border/70 bg-white/85 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-soft;
 }
