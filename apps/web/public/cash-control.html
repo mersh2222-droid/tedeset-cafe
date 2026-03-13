@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tedeset · cash control + print ready</title>
+<style>
+  :root {
+    --bg: #f4f0ea;
+    --paper: #ffffff;
+    --soft: #faf6f0;
+    --text: #1e2b2c;
+    --muted: #4d5a5b;
+    --line: #d9cdbc;
+    --brand-dark: #2f4b3c;
+    --brand-main: #3f6b51;
+    --brand-accent: #c06d2b;
+    --brand-gold: #b4843c;
+    --ok: #1f7b4d;
+    --warn: #b6560c;
+    --bad: #b33f2f;
+    --shadow: 0 10px 30px rgba(35, 45, 40, 0.08);
+    --radius-card: 24px;
+    --radius-field: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.4; }
+  .app { max-width: 1480px; margin: 0 auto; padding: 16px; }
+  /* nicer inputs */
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-field);
+    background: white;
+    font-size: 0.95rem;
+    transition: 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(192, 109, 43, 0.15);
+  }
+  textarea { min-height: 80px; resize: vertical; }
+  .btn {
+    border: none;
+    border-radius: 40px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: white;
+    border: 1.5px solid var(--line);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.1s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .btn.primary { background: var(--brand-main); border-color: var(--brand-main); color: white; }
+  .btn.accent { background: var(--brand-accent); border-color: var(--brand-accent); color: white; }
+  .btn.soft { background: #f2ebe2; border-color: #d6c8b8; color: var(--text); }
+  .btn.small { padding: 7px 12px; font-size: 0.85rem; }
+  /* hero header */
+  .hero {
+    background: linear-gradient(145deg, #284b3a, #3d6b52);
+    color: white;
+    padding: 24px;
+    border-radius: 32px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .brand-mark {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(3px);
+    width: 64px; height: 64px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    font-size: 32px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .brand h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .brand p { opacity: 0.85; font-size: 0.95rem; }
+  .toolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 5px;
+  }
+  .toolbar input, .toolbar select {
+    background: rgba(255,255,255,0.9);
+    border: none;
+  }
+  /* dashboard cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    margin: 20px 0 18px;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+  }
+  .card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .card .symbol {
+    width: 32px; height: 32px;
+    background: #f0e8de;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+  }
+  .card .value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-top: 14px;
+  }
+  .card .note {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 8px;
+    border-top: 1px dashed var(--line);
+    padding-top: 8px;
+  }
+  .ok { color: var(--ok); }
+  .warn { color: var(--warn); }
+  .bad { color: var(--bad); }
+  /* main two columns */
+  .grid-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .icon-chip {
+    width: 48px; height: 48px;
+    background: var(--soft);
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    border: 1px solid var(--line);
+  }
+  .panel-title h2 { font-size: 1.3rem; font-weight: 600; }
+  .panel-title p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+  .form-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .form-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .mini-box {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 16px;
+  }
+  .tiny-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .mini-box strong {
+    display: block;
+    font-size: 26px;
+    margin-top: 8px;
+  }
+  .summary-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0 0;
+  }
+  /* transaction table */
+  .tx-table {
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+  .tx-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tx-table th {
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 6px;
+    border-bottom: 2px solid var(--line);
+  }
+  .tx-table td {
+    padding: 10px 6px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .tx-table input, .tx-table select {
+    padding: 8px 8px;
+    background: white;
+  }
+  .helper-note {
+    background: #f7ede1;
+    border-left: 5px solid var(--brand-accent);
+    padding: 12px 18px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    color: #2e3b37;
+    margin: 20px 0 0;
+  }
+  .sign-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .history-table td, .history-table th {
+    padding: 10px 6px;
+  }
+  .history-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .pill-ok { background: #dff0e4; color: var(--ok); }
+  .pill-warn { background: #feeee2; color: var(--warn); }
+  .pill-bad { background: #fde9e7; color: var(--bad); }
+  /* ========== PRINT IMPROVEMENTS ========== */
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white; }
+    .app { padding: 0.2in; }
+    .hero {
+      background: white; color: black; border: 1px solid #aaa;
+      box-shadow: none; padding: 16px; margin-bottom: 16px;
+    }
+    .hero input, .hero select { border: none; background: transparent; padding-left: 0; }
+    .toolbar input, .toolbar select { border: none; background: transparent; padding-left: 0; }
+    .panel { box-shadow: none; border: 1px solid #888; break-inside: avoid; }
+    /* convert all inputs/selects to static text */
+    input, select, textarea {
+      border: none !important;
+      background: transparent !important;
+      padding: 2px 0 !important;
+      box-shadow: none !important;
+      -webkit-appearance: none;
+      appearance: none;
+      color: black;
+      font-weight: normal;
+      font-size: 10pt;
+    }
+    select { text-indent: 0; }
+    select::-ms-expand { display: none; }
+    /* ensure table borders print */
+    table, th, td { border-color: #000; }
+    .tx-table td, .tx-table th { border-color: #333; }
+    /* make transaction table values clearly visible */
+    .tx-table input, .tx-table select {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+    /* remove extra spacing */
+    .tx-table td { padding: 4px 4px; }
+    /* show that it's a report */
+    .print-head { display: block; margin-bottom: 20px; }
+    .cards .card { border: 1px solid #000; }
+  }
+  .print-head { display: none; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .text-muted { color: var(--muted); }
+  @media (max-width: 1100px) {
+    .cards { grid-template-columns: repeat(3,1fr); }
+    .grid-main { grid-template-columns: 1fr; }
+    .form-grid-4 { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 600px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+    .form-grid-4, .form-grid-2, .summary-box, .sign-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- hero / header -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <div class="brand-mark">&#x1f9fa;</div>
+        <div>
+          <h1 id="brandTitle">Tedeset Market &amp; Cafe</h1>
+          <p>Simple cash &middot; every move counts</p>
+        </div>
+      </div>
+      <div class="hero-actions no-print">
+        <button class="btn primary" id="saveBtn">&#x1f4be; Save to device</button>
+        <button class="btn soft" id="printBtn">&#x1f5a8;&#xfe0f; Print report</button>
+        <button class="btn soft" id="exportDayBtn">&#x1f4c5; Export today CSV</button>
+        <button class="btn soft" id="exportAllBtn">&#x1f4e6; Backup JSON</button>
+      </div>
+    </div>
+    <!-- quick date & crew -->
+    <div class="toolbar no-print">
+      <div><label>Work date</label><input id="recordDate" type="date"></div>
+      <div><label>Shift</label><select id="shift"><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Full Day</option></select></div>
+      <div><label>Cashier</label><input id="cashier" placeholder="name"></div>
+      <div><label>Manager</label><input id="manager" placeholder="name"></div>
+      <div><label>Store name</label><input id="storeName" placeholder="Tedeset Market"></div>
+      <div><label>Store address</label><input id="storeAddress" placeholder="street, city"></div>
+    </div>
+  </div>
+  <!-- print header (visible only when printing) -->
+  <div class="print-head">
+    <h1 style="font-size: 1.8rem; margin-bottom: 0.2rem;">Daily cash statement</h1>
+    <div id="printMeta" style="font-size: 1rem; color:#333; border-bottom: 1px solid #aaa; padding-bottom: 8px;"></div>
+  </div>
+  <!-- dashboard cards (key figures) -->
+  <div class="cards" id="dashboardCards"></div>
+  <!-- main grid: left column (inputs & log) , right column (summary & history) -->
+  <div class="grid-main">
+    <!-- LEFT COLUMN (detailed work) -->
+    <div class="left-col" style="display: flex; flex-direction: column; gap: 22px;">
+      <!-- POS block -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f9fe;</div>
+            <div><h2>1. POS totals (from close report)</h2><p>cash sales go to drawer, others just info</p></div>
+          </div>
+        </div>
+        <div class="form-grid-4">
+          <div><label class="tiny-label">Cash sales</label><input id="posCashSales" type="number" step="0.01" placeholder="0.00"></div>
+          <div><label class="tiny-label">Card sales</label><input id="posCardSales" type="number" step="0.01" placeholder="0.00"></div>
+          <div><label class="tiny-label">EBT sales</label><input id="posEbtSales" type="number" step="0.01" placeholder="0.00"></div>
+          <div><label class="tiny-label">Online sales</label><input id="posOnlineSales" type="number" step="0.01" placeholder="0.00"></div>
+          <div><label class="tiny-label">Gift cards</label><input id="posGiftCardSales" type="number" step="0.01" placeholder="0.00"></div>
+          <div><label class="tiny-label">POS note</label><input id="posNote" placeholder="batch / till #"></div>
+        </div>
+        <div class="summary-box" style="margin-top:12px;">
+          <div class="mini-box"><span class="tiny-label">Total sales</span><strong id="posTotalSalesText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Cash to drawer</span><strong id="posCashToDrawerText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Non&#x2011;cash</span><strong id="posNonCashText">$0.00</strong></div>
+        </div>
+      </section>
+      <!-- Cash on hand (opening / expected / actual) -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f4b0;</div>
+            <div><h2>2. Cash on hand &middot; drawer &amp; safe</h2><p>opening, expected, and physical count</p></div>
+          </div>
+          <div class="no-print flex-between">
+            <button class="btn small line" id="copyExpectedBtn">&#x2b07;&#xfe0f; Use expected</button>
+            <button class="btn small line" id="carryForwardBtn">&#x21a9;&#xfe0f; carry forward</button>
+          </div>
+        </div>
+        <div class="form-grid-4">
+          <div><label class="tiny-label">Opening drawer</label><input id="openingDrawer" type="number" step="0.01" placeholder="e.g. 300"></div>
+          <div><label class="tiny-label">Opening safe</label><input id="openingSafe" type="number" step="0.01" placeholder="0"></div>
+          <div><label class="tiny-label">Actual closing drawer</label><input id="actualDrawer" type="number" step="0.01" placeholder="count physically"></div>
+          <div><label class="tiny-label">Actual closing safe</label><input id="actualSafe" type="number" step="0.01" placeholder="count physically"></div>
+        </div>
+        <div class="summary-box">
+          <div class="mini-box"><span class="tiny-label">Expected drawer</span><strong id="expectedDrawerText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Expected safe</span><strong id="expectedSafeText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Expected total cash</span><strong id="expectedTotalText">$0.00</strong></div>
+        </div>
+      </section>
+      <!-- Cash movement log (all activities) -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f504;</div>
+            <div><h2>3. Cash log &middot; every movement</h2><p>expenses, drops, bank, refunds</p></div>
+          </div>
+          <button class="btn accent no-print" id="addTxBtn">&#x2795; Add row</button>
+        </div>
+        <div class="tx-table">
+          <table>
+            <thead><tr><th>Time</th><th>Type</th><th>Location</th><th>Amount</th><th>Note / desc</th><th class="no-print"></th></tr></thead>
+            <tbody id="txBody"></tbody>
+          </table>
+        </div>
+        <div class="summary-box">
+          <div class="mini-box"><span class="tiny-label">Cash in (total)</span><strong id="cashInText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Cash out (total)</span><strong id="cashOutText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Bank deposits out</span><strong id="bankDepositText">$0.00</strong></div>
+        </div>
+        <div class="helper-note">
+          &#x1f4a1; <strong>Paid out</strong> = cash expense (supplies, vendor). <strong>Cash refund</strong> = return. Safe drop moves drawer &rarr; safe.
+        </div>
+      </section>
+      <!-- Notes & sign off -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f4cb;</div>
+            <div><h2>4. Notes &amp; approval</h2><p>reason for any variance, manager OK</p></div>
+          </div>
+        </div>
+        <textarea id="dailyNotes" placeholder="Explain any shortage/over, vendor payments, envelope numbers, etc."></textarea>
+        <div class="sign-grid">
+          <div><label class="tiny-label">Cashier sign</label><input id="signCashier" placeholder="name/initials"></div>
+          <div><label class="tiny-label">Manager sign</label><input id="signManager" placeholder="name/initials"></div>
+        </div>
+      </section>
+    </div>
+    <!-- RIGHT COLUMN (summary & history) -->
+    <div class="right-col" style="display: flex; flex-direction: column; gap: 22px;">
+      <!-- RECONCILIATION summary + variance -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x2696;&#xfe0f;</div>
+            <div><h2>Daily summary</h2><p>actual vs expected &amp; cash expenses</p></div>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="mini-box"><span class="tiny-label">Actual total cash</span><strong id="actualTotalText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Variance</span><strong id="varianceText">$0.00</strong></div>
+        </div>
+        <div class="summary-box">
+          <div class="mini-box"><span class="tiny-label">Safe drop total</span><strong id="safeDropText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">Bank cash in</span><strong id="bankCashInText">$0.00</strong></div>
+          <div class="mini-box"><span class="tiny-label">&#x1f4b8; Cash expenses</span><strong id="payoutRefundText">$0.00</strong></div>
+        </div>
+        <div id="varianceHelper" class="helper-note" style="margin-top:16px;"></div>
+      </section>
+      <!-- recent history -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f4c6;</div>
+            <div><h2>Recent closes</h2><p>last 7 days on device</p></div>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="history-table">
+            <thead><tr><th>Date</th><th>Expected</th><th>Actual</th><th>Var</th><th>Status</th></tr></thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </section>
+      <!-- data tools (import / clear) -->
+      <section class="panel no-print">
+        <div class="panel-head">
+          <div class="panel-title">
+            <div class="icon-chip">&#x1f9f0;</div>
+            <div><h2>Backup &amp; tools</h2><p>export/import, reset day</p></div>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <button class="btn line" id="importBtn">&#x1f4c2; Import backup</button>
+          <button class="btn line" id="clearDayBtn">&#x1f5d1;&#xfe0f; Clear today</button>
+        </div>
+        <input id="importFile" type="file" accept="application/json" style="display:none;">
+        <div style="margin-top:16px; font-size:0.85rem; background: #eae3db; padding: 12px; border-radius: 18px;">
+          &#x2b50; To change colors, edit <code>:root</code> in CSS.
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+  (function() {
+    var APP_KEY = 'tedeset_cash_control_app_v1';
+    var TX_TYPES = ['Paid Out', 'Cash Refund', 'Safe Drop', 'Safe to Drawer', 'Bank Deposit', 'Bank Cash In', 'Other Cash In', 'Other Cash Out'];
+    var LOCATIONS = ['Drawer', 'Safe'];
+    var currency = function(n) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(n || 0)); };
+    var money = function(v) { return Number.parseFloat(v || 0) || 0; };
+    var todayISO = function() { return new Date().toISOString().slice(0, 10); };
+    var currentTime = function() { return new Date().toTimeString().slice(0, 5); };
+    function defaultRecord(date) {
+      return {
+        date: date, shift: 'Morning', cashier: '', manager: '',
+        openingDrawer: 300, openingSafe: 0,
+        posCashSales: 0, posCardSales: 0, posEbtSales: 0, posOnlineSales: 0, posGiftCardSales: 0, posNote: '',
+        actualDrawer: 0, actualSafe: 0,
+        dailyNotes: '', signCashier: '', signManager: '',
+        transactions: []
+      };
+    }
+    function loadStore() {
+      var raw = localStorage.getItem(APP_KEY);
+      if (!raw) return { storeName: 'Tedeset Market and Cafe', storeAddress: '10240 NE Halsey Street, Portland, OR', records: {} };
+      try {
+        var parsed = JSON.parse(raw);
+        return { storeName: parsed.storeName || 'Tedeset Market and Cafe', storeAddress: parsed.storeAddress || '', records: parsed.records || {} };
+      } catch(e) { return { storeName: 'Tedeset Market and Cafe', storeAddress: '', records: {} }; }
+    }
+    var store = loadStore();
+    var currentDate = todayISO();
+    var currentRecord = store.records[currentDate] || defaultRecord(currentDate);
+    var ids = ['recordDate','shift','cashier','manager','storeName','storeAddress','posCashSales','posCardSales','posEbtSales','posOnlineSales','posGiftCardSales','posNote','openingDrawer','openingSafe','actualDrawer','actualSafe','dailyNotes','signCashier','signManager'];
+    var els = {};
+    ids.forEach(function(id) { els[id] = document.getElementById(id); });
+    function setValue(id, val) { if (els[id]) els[id].value = val != null ? val : ''; }
+    function saveStore() {
+      store.storeName = els.storeName.value.trim() || 'Tedeset Market and Cafe';
+      store.storeAddress = els.storeAddress.value.trim() || '';
+      store.records[currentDate] = currentRecord;
+      localStorage.setItem(APP_KEY, JSON.stringify(store));
+      document.getElementById('brandTitle').textContent = store.storeName;
+    }
+    function loadRecord(date) {
+      currentDate = date;
+      currentRecord = store.records[date] || defaultRecord(date);
+      setValue('recordDate', date);
+      setValue('shift', currentRecord.shift);
+      setValue('cashier', currentRecord.cashier);
+      setValue('manager', currentRecord.manager);
+      setValue('storeName', store.storeName);
+      setValue('storeAddress', store.storeAddress);
+      setValue('posCashSales', currentRecord.posCashSales);
+      setValue('posCardSales', currentRecord.posCardSales);
+      setValue('posEbtSales', currentRecord.posEbtSales);
+      setValue('posOnlineSales', currentRecord.posOnlineSales);
+      setValue('posGiftCardSales', currentRecord.posGiftCardSales);
+      setValue('posNote', currentRecord.posNote);
+      setValue('openingDrawer', currentRecord.openingDrawer);
+      setValue('openingSafe', currentRecord.openingSafe);
+      setValue('actualDrawer', currentRecord.actualDrawer);
+      setValue('actualSafe', currentRecord.actualSafe);
+      setValue('dailyNotes', currentRecord.dailyNotes);
+      setValue('signCashier', currentRecord.signCashier);
+      setValue('signManager', currentRecord.signManager);
+      renderTransactions();
+      recalc();
+    }
+    function saveCurrentInputs() {
+      currentRecord.shift = els.shift.value;
+      currentRecord.cashier = els.cashier.value;
+      currentRecord.manager = els.manager.value;
+      currentRecord.posCashSales = money(els.posCashSales.value);
+      currentRecord.posCardSales = money(els.posCardSales.value);
+      currentRecord.posEbtSales = money(els.posEbtSales.value);
+      currentRecord.posOnlineSales = money(els.posOnlineSales.value);
+      currentRecord.posGiftCardSales = money(els.posGiftCardSales.value);
+      currentRecord.posNote = els.posNote.value;
+      currentRecord.openingDrawer = money(els.openingDrawer.value);
+      currentRecord.openingSafe = money(els.openingSafe.value);
+      currentRecord.actualDrawer = money(els.actualDrawer.value);
+      currentRecord.actualSafe = money(els.actualSafe.value);
+      currentRecord.dailyNotes = els.dailyNotes.value;
+      currentRecord.signCashier = els.signCashier.value;
+      currentRecord.signManager = els.signManager.value;
+    }
+    function emptyTx() { return { time: currentTime(), type: 'Paid Out', location: 'Drawer', amount: '', note: '' }; }
+    function addTransaction(tx) { if (!tx) tx = emptyTx(); currentRecord.transactions.push(tx); renderTransactions(); saveStore(); recalc(); }
+    function removeTransaction(index) { currentRecord.transactions.splice(index,1); renderTransactions(); saveStore(); recalc(); }
+    function renderTransactions() {
+      var body = document.getElementById('txBody');
+      body.innerHTML = '';
+      if (!currentRecord.transactions.length) {
+        body.innerHTML = '<tr><td colspan="6" style="padding:20px;text-align:center;color:var(--muted);">&#x2795; Click "Add row" to record cash expenses, drops, bank, etc.</td></tr>';
+        return;
+      }
+      currentRecord.transactions.forEach(function(tx, idx) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td><input type="time" data-index="' + idx + '" data-key="time" value="' + escapeHtml(tx.time||'') + '"></td>' +
+          '<td><select data-index="' + idx + '" data-key="type">' + TX_TYPES.map(function(t) { return '<option ' + (tx.type===t?'selected':'') + '>' + t + '</option>'; }).join('') + '</select></td>' +
+          '<td><select data-index="' + idx + '" data-key="location">' + LOCATIONS.map(function(l) { return '<option ' + (tx.location===l?'selected':'') + '>' + l + '</option>'; }).join('') + '</select></td>' +
+          '<td><input type="number" step="0.01" min="0" data-index="' + idx + '" data-key="amount" value="' + escapeHtml(tx.amount) + '"></td>' +
+          '<td><input type="text" data-index="' + idx + '" data-key="note" value="' + escapeHtml(tx.note||'') + '" placeholder="vendor/ref/envelope"></td>' +
+          '<td class="no-print"><button class="btn small line" data-remove="' + idx + '">&#x2715;</button></td>';
+        body.appendChild(tr);
+      });
+      body.querySelectorAll('input, select').forEach(function(el) { el.addEventListener('input', handleTxUpdate); });
+      body.querySelectorAll('[data-remove]').forEach(function(btn) { btn.addEventListener('click', function() { removeTransaction(Number(btn.dataset.remove)); }); });
+    }
+    function handleTxUpdate(e) {
+      var idx = Number(e.target.dataset.index);
+      var key = e.target.dataset.key;
+      var val = e.target.value;
+      if (key === 'amount') val = val === '' ? '' : money(val);
+      currentRecord.transactions[idx][key] = val;
+      saveStore();
+      recalc();
+    }
+    function txTotals(rec) {
+      var drawer=0, safe=0, inTotal=0, outTotal=0, bankDeposit=0, bankCashIn=0, safeDrop=0, payoutRefund=0;
+      (rec.transactions || []).forEach(function(tx) {
+        var amt = money(tx.amount);
+        if (!amt) return;
+        var loc = tx.location || 'Drawer';
+        switch (tx.type) {
+          case 'Paid Out': case 'Cash Refund': case 'Other Cash Out':
+            if (loc==='Drawer') drawer -= amt; else safe -= amt;
+            outTotal += amt;
+            if (tx.type==='Paid Out'||tx.type==='Cash Refund') payoutRefund += amt;
+            break;
+          case 'Safe Drop': drawer -= amt; safe += amt; safeDrop += amt; break;
+          case 'Safe to Drawer': safe -= amt; drawer += amt; break;
+          case 'Bank Deposit': if(loc==='Drawer') drawer -= amt; else safe -= amt; outTotal += amt; bankDeposit += amt; break;
+          case 'Bank Cash In': if(loc==='Drawer') drawer += amt; else safe += amt; inTotal += amt; bankCashIn += amt; break;
+          case 'Other Cash In': if(loc==='Drawer') drawer += amt; else safe += amt; inTotal += amt; break;
+        }
+      });
+      return { drawer: drawer, safe: safe, overallIn: inTotal, overallOut: outTotal, bankDeposit: bankDeposit, bankCashIn: bankCashIn, safeDrop: safeDrop, payoutRefund: payoutRefund };
+    }
+    function calcRecord(rec) {
+      var opDraw = money(rec.openingDrawer);
+      var opSafe = money(rec.openingSafe);
+      var cashSales = money(rec.posCashSales);
+      var card = money(rec.posCardSales), ebt = money(rec.posEbtSales), online = money(rec.posOnlineSales), gift = money(rec.posGiftCardSales);
+      var tx = txTotals(rec);
+      var expectedDrawer = opDraw + cashSales + tx.drawer;
+      var expectedSafe = opSafe + tx.safe;
+      var expectedTotal = opDraw + opSafe + cashSales + tx.overallIn - tx.overallOut;
+      var actualTotal = money(rec.actualDrawer) + money(rec.actualSafe);
+      var variance = actualTotal - expectedTotal;
+      var posTotal = cashSales + card + ebt + online + gift;
+      return { opDraw: opDraw, opSafe: opSafe, cashSales: cashSales, card: card, ebt: ebt, online: online, gift: gift, expectedDrawer: expectedDrawer, expectedSafe: expectedSafe, expectedTotal: expectedTotal, actualTotal: actualTotal, variance: variance, posTotal: posTotal, nonCash: posTotal - cashSales, drawer: tx.drawer, safe: tx.safe, overallIn: tx.overallIn, overallOut: tx.overallOut, bankDeposit: tx.bankDeposit, bankCashIn: tx.bankCashIn, safeDrop: tx.safeDrop, payoutRefund: tx.payoutRefund };
+    }
+    function statusForVariance(v) {
+      var abs = Math.abs(v);
+      if (abs < 0.01) return { text: 'Balanced', cls: 'pill-ok' };
+      if (abs <= 5) return { text: 'Review', cls: 'pill-warn' };
+      return { text: v > 0 ? 'Over' : 'Short', cls: 'pill-bad' };
+    }
+    function recalc() {
+      saveCurrentInputs();
+      var c = calcRecord(currentRecord);
+      document.getElementById('posTotalSalesText').textContent = currency(c.posTotal);
+      document.getElementById('posCashToDrawerText').textContent = currency(c.cashSales);
+      document.getElementById('posNonCashText').textContent = currency(c.nonCash);
+      document.getElementById('expectedDrawerText').textContent = currency(c.expectedDrawer);
+      document.getElementById('expectedSafeText').textContent = currency(c.expectedSafe);
+      document.getElementById('expectedTotalText').textContent = currency(c.expectedTotal);
+      document.getElementById('cashInText').textContent = currency(c.cashSales + c.overallIn);
+      document.getElementById('cashOutText').textContent = currency(c.overallOut);
+      document.getElementById('bankDepositText').textContent = currency(c.bankDeposit);
+      document.getElementById('actualTotalText').textContent = currency(c.actualTotal);
+      document.getElementById('varianceText').textContent = currency(c.variance);
+      document.getElementById('safeDropText').textContent = currency(c.safeDrop);
+      document.getElementById('bankCashInText').textContent = currency(c.bankCashIn);
+      document.getElementById('payoutRefundText').textContent = currency(c.payoutRefund);
+      var cards = [
+        { label: 'Opening cash', val: currency(c.opDraw + c.opSafe), icon: '&#x1fa99;', note: 'drawer + safe' },
+        { label: 'POS total', val: currency(c.posTotal), icon: '&#x1f9fe;', note: 'all sales' },
+        { label: 'Cash in (total)', val: currency(c.cashSales + c.overallIn), icon: '&#x2b06;&#xfe0f;', note: 'sales + bank in' },
+        { label: 'Cash out (total)', val: currency(c.overallOut), icon: '&#x2b07;&#xfe0f;', note: 'expenses, drops, bank' },
+        { label: 'Expected close', val: currency(c.expectedTotal), icon: '&#x1f4cc;', note: 'what you should have' },
+        { label: 'Variance', val: currency(c.variance), icon: '&#x2696;&#xfe0f;', note: Math.abs(c.variance)<0.01 ? 'Balanced' : c.variance>0 ? 'Over' : 'Short', cls: Math.abs(c.variance)<0.01 ? 'ok' : Math.abs(c.variance)<=5 ? 'warn' : 'bad' }
+      ];
+      document.getElementById('dashboardCards').innerHTML = cards.map(function(cd) {
+        return '<div class="card"><div class="meta"><span>' + cd.label + '</span><span class="symbol">' + cd.icon + '</span></div><div class="value ' + (cd.cls||'') + '">' + cd.val + '</div><div class="note">' + cd.note + '</div></div>';
+      }).join('');
+      var vh = document.getElementById('varianceHelper');
+      if (Math.abs(c.variance) < 0.01) {
+        vh.textContent = 'Balanced \u2013 actual cash matches expected.';
+        vh.style.background = '#e2f0e2'; vh.style.color = '#1f7b4d';
+      } else if (Math.abs(c.variance) <= 5) {
+        vh.textContent = 'Small variance \u2013 double-check cash expenses, refunds, and drops.';
+        vh.style.background = '#fef0d9'; vh.style.color = '#b6560c';
+      } else {
+        vh.textContent = 'Large variance \u2013 recount drawer & safe, review all movements.';
+        vh.style.background = '#fce2de'; vh.style.color = '#b33f2f';
+      }
+      document.getElementById('printMeta').textContent = store.storeName + ' \u00b7 ' + store.storeAddress + ' \u00b7 ' + currentDate + ' ' + currentRecord.shift + ' \u00b7 cashier: ' + (currentRecord.cashier||'\u2014') + ' manager: ' + (currentRecord.manager||'\u2014');
+      renderHistory();
+    }
+    function renderHistory() {
+      var rows = Object.keys(store.records).sort(function(a,b) { return b.localeCompare(a); }).slice(0,7).map(function(date) {
+        var c = calcRecord(store.records[date]);
+        return { date: date, expected: c.expectedTotal, actual: c.actualTotal, variance: c.variance, status: statusForVariance(c.variance) };
+      });
+      var body = document.getElementById('historyBody');
+      if (!rows.length) body.innerHTML = '<tr><td colspan="5" style="padding:18px;text-align:center;">No previous days</td></tr>';
+      else body.innerHTML = rows.map(function(r) { return '<tr><td>' + r.date + '</td><td>' + currency(r.expected) + '</td><td>' + currency(r.actual) + '</td><td class="' + (Math.abs(r.variance)<0.01?'ok':r.variance>0?'warn':'bad') + '">' + currency(r.variance) + '</td><td><span class="history-pill ' + r.status.cls + '">' + r.status.text + '</span></td></tr>'; }).join('');
+    }
+    function exportCurrentDayCsv() {
+      var c = calcRecord(currentRecord);
+      var lines = [
+        ['Store', store.storeName],
+        ['Address', store.storeAddress],
+        ['Date', currentDate],
+        ['Shift', currentRecord.shift],
+        ['Cashier', currentRecord.cashier],
+        ['Manager', currentRecord.manager],
+        [],
+        ['Opening Drawer', c.opDraw],
+        ['Opening Safe', c.opSafe],
+        ['POS Cash', c.cashSales],
+        ['Expected Total', c.expectedTotal],
+        ['Actual Total', c.actualTotal],
+        ['Variance', c.variance],
+        [],
+        ['Transactions'],
+        ['Time','Type','Location','Amount','Note']
+      ];
+      (currentRecord.transactions || []).forEach(function(tx) { lines.push([tx.time||'', tx.type||'', tx.location||'', money(tx.amount), tx.note||'']); });
+      lines.push([], ['Notes', currentRecord.dailyNotes]);
+      var csv = lines.map(function(row) { return row.map(function(cell) { var s = String(cell != null ? cell : ''); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }).join(','); }).join('\n');
+      downloadBlob(new Blob([csv], {type:'text/csv'}), 'tedeset-' + currentDate + '.csv');
+    }
+    function downloadBlob(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000); }
+    function exportAllJson() { saveCurrentInputs(); saveStore(); downloadBlob(new Blob([JSON.stringify(store,null,2)], {type:'application/json'}), 'tedeset-backup.json'); }
+    function importJson(file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          var incoming = JSON.parse(e.target.result);
+          if (!incoming || typeof incoming !== 'object') throw new Error();
+          store = { storeName: incoming.storeName || 'Tedeset', storeAddress: incoming.storeAddress || '', records: incoming.records || {} };
+          currentDate = Object.keys(store.records).sort().slice(-1)[0] || todayISO();
+          saveStore(); loadRecord(currentDate); alert('Imported');
+        } catch(ex) { alert('Invalid file'); }
+      };
+      reader.readAsText(file);
+    }
+    function clearCurrentDay() { if (confirm('Clear today\'s data?')) { delete store.records[currentDate]; currentRecord = defaultRecord(currentDate); saveStore(); loadRecord(currentDate); } }
+    function copyExpectedToActual() { var c = calcRecord(currentRecord); currentRecord.actualDrawer = Number(c.expectedDrawer.toFixed(2)); currentRecord.actualSafe = Number(c.expectedSafe.toFixed(2)); loadRecord(currentDate); saveStore(); }
+    function carryForwardPreviousClose() {
+      var prev = Object.keys(store.records).filter(function(d) { return d < currentDate; }).sort().slice(-1)[0];
+      if (!prev) return alert('No previous day');
+      var p = store.records[prev];
+      currentRecord.openingDrawer = money(p.actualDrawer); currentRecord.openingSafe = money(p.actualSafe); loadRecord(currentDate); saveStore();
+    }
+    function bindFieldUpdates() {
+      els.recordDate.addEventListener('change', function(e) { saveCurrentInputs(); saveStore(); loadRecord(e.target.value || todayISO()); });
+      ids.filter(function(id) { return id !== 'recordDate'; }).forEach(function(id) { els[id].addEventListener('input', function() { saveCurrentInputs(); saveStore(); recalc(); }); });
+    }
+    function escapeHtml(v) { return String(v != null ? v : '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    document.getElementById('addTxBtn').addEventListener('click', function() { addTransaction(); });
+    document.getElementById('saveBtn').addEventListener('click', function() { saveCurrentInputs(); saveStore(); recalc(); alert('Saved'); });
+    document.getElementById('printBtn').addEventListener('click', function() {
+      saveCurrentInputs();
+      saveStore();
+      window.print();
+    });
+    document.getElementById('exportDayBtn').addEventListener('click', exportCurrentDayCsv);
+    document.getElementById('exportAllBtn').addEventListener('click', exportAllJson);
+    document.getElementById('importBtn').addEventListener('click', function() { document.getElementById('importFile').click(); });
+    document.getElementById('importFile').addEventListener('change', function(e) { if (e.target.files[0]) importJson(e.target.files[0]); e.target.value=''; });
+    document.getElementById('clearDayBtn').addEventListener('click', clearCurrentDay);
+    document.getElementById('copyExpectedBtn').addEventListener('click', copyExpectedToActual);
+    document.getElementById('carryForwardBtn').addEventListener('click', carryForwardPreviousClose);
+    bindFieldUpdates();
+    loadRecord(currentDate);
+  })();
+</script>
+</body>
+</html>
