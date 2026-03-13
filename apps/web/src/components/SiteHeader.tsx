@@ -18,7 +18,8 @@ export function SiteHeader({ orderUrl, phone }: SiteHeaderProps) {
     { label: "Marketplace", href: "/marketplace" },
     { label: "Order Online", href: "/order" },
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" }
+    { label: "Contact", href: "/contact" },
+    { label: "Dashboard", href: "/dashboard" }
   ];
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/80 backdrop-blur">
