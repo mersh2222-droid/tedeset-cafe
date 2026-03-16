@@ -41,22 +41,40 @@ export const metadata: Metadata = {
   }
 };
 
+const fallbackSettings = {
+  businessName: "Tedeset Cafe and Marketplace",
+  address: "10240 NE Halsey St, Portland, OR 97220",
+  phone: "(503) 555-0142",
+  email: "tedesetmarketcafe@gmail.com",
+  hours: "Daily · 9am–9pm",
+  doorDashUrl: null as string | null,
+  uberEatsUrl: null as string | null,
+  socialLinks: [] as { label: string; url: string }[] | null
+};
+
 export default async function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
+  let settings;
+  try {
+    settings = await getSiteSettings();
+  } catch {
+    settings = fallbackSettings;
+  }
+  if (!settings) settings = fallbackSettings;
 
   const businessName =
     settings?.businessName || "Tedeset Cafe and Marketplace";
   const address =
     settings?.address || "10240 NE Halsey St, Portland, OR 97220";
+  const orderUrl = "https://www.ubereats.com/store/tedeset-market-and-cafe-10240a-northeast-halsey-street/9vv36UqmWXShQl442xxvQw?diningMode=DELIVERY";
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans">
-        <SiteHeader orderUrl={settings?.doorDashUrl} phone={settings?.phone} />
+        <SiteHeader orderUrl={orderUrl} phone={settings?.phone} />
         <main className="page-shell">{children}</main>
         <SiteFooter
           businessName={businessName}
@@ -64,9 +82,10 @@ export default async function RootLayout({
           phone={settings?.phone}
           email={settings?.email}
           hours={settings?.hours}
+          orderUrl={orderUrl}
           socialLinks={settings?.socialLinks}
         />
-        <StickyOrderButton orderUrl={settings?.doorDashUrl} phone={settings?.phone} />
+        <StickyOrderButton orderUrl={orderUrl} phone={settings?.phone} />
       </body>
     </html>
   );

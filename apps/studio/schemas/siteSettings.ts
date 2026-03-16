@@ -37,7 +37,13 @@ export default defineType({
       name: "doorDashUrl",
       title: "DoorDash URL",
       type: "url",
-      initialValue: "https://example.com"
+      description: "Optional. Link to your DoorDash store."
+    }),
+    defineField({
+      name: "uberEatsUrl",
+      title: "Uber Eats URL",
+      type: "url",
+      description: "Primary order link. Your store page on Uber Eats for delivery & pickup."
     }),
     defineField({
       name: "announcementText",

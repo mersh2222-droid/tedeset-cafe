@@ -42,7 +42,7 @@ export default async function HomePage() {
         headline={heroHeadline}
         subheadline={heroSubheadline}
         imageUrl={home?.heroImage ? urlFor(home.heroImage).width(1200).height(900).url() : undefined}
-        orderUrl={settings?.doorDashUrl}
+        orderUrl="https://www.ubereats.com/store/tedeset-market-and-cafe-10240a-northeast-halsey-street/9vv36UqmWXShQl442xxvQw?diningMode=DELIVERY"
         phone={settings?.phone}
         address={settings?.address}
         socialLinks={settings?.socialLinks}

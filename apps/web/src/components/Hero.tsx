@@ -151,7 +151,12 @@ export function Hero({
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" variant="accent">
-                <Link href={phoneHref || orderUrl || "/order"}>Order Online</Link>
+                <Link
+                href={orderUrl || phoneHref || "/order"}
+                {...(orderUrl?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer", referrerPolicy: "no-referrer" as const } : {})}
+              >
+                Order Online
+              </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link href="/menu">Explore Menu</Link>

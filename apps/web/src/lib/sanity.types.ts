@@ -38,6 +38,7 @@ export interface SiteSettings {
   email?: string | null;
   hours?: string | null;
   doorDashUrl?: string | null;
+  uberEatsUrl?: string | null;
   announcementText?: string | null;
   socialLinks?: {
     label: string;

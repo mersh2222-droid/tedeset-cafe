@@ -8,6 +8,7 @@ interface SiteFooterProps {
   phone?: string | null;
   email?: string | null;
   hours?: string | null;
+  orderUrl?: string | null;
   socialLinks?: { label: string; url: string }[] | null;
 }
 
@@ -17,6 +18,7 @@ export function SiteFooter({
   phone,
   email,
   hours,
+  orderUrl,
   socialLinks
 }: SiteFooterProps) {
   const phoneDigits = phone ? phone.replace(/\D/g, "") : null;
@@ -190,13 +192,14 @@ export function SiteFooter({
               {[
                 { label: "Menu", href: "/menu" },
                 { label: "Marketplace", href: "/marketplace" },
-                { label: "Order Online", href: phoneHref || "/order" },
+                { label: "Order Online", href: orderUrl || phoneHref || "/order" },
                 { label: "Contact", href: "/contact" }
               ].map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   className="group/link flex w-full items-center justify-between gap-3 rounded-full border border-transparent px-3 py-2 transition hover:border-border/70 hover:bg-white/70 hover:text-foreground"
+                  {...(item.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer", referrerPolicy: "no-referrer" as const } : {})}
                 >
                   <span className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-primary/60 transition group-hover/link:scale-110" />

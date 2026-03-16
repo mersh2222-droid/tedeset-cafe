@@ -11,6 +11,7 @@ const demoSiteSettings: SiteSettings = {
   email: "tedesetmarketcafe@gmail.com",
   hours: "Daily · 9am–9pm",
   doorDashUrl: "https://example.com",
+  uberEatsUrl: "https://www.ubereats.com",
   announcementText: "Now serving seasonal winter lattes.",
   socialLinks: [
     {
@@ -305,6 +306,7 @@ export const siteSettingsQuery = groq`
     email,
     hours,
     doorDashUrl,
+    uberEatsUrl,
     announcementText,
     socialLinks
   }

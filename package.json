@@ -4,7 +4,7 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "pnpm -r --parallel dev",
-    "dev:web": "pnpm --filter web dev",
+    "dev:web": "cd apps/web && rm -rf .next && pnpm exec next dev --port 3000",
     "dev:studio": "pnpm --filter studio dev"
   }
 }
