@@ -4,6 +4,18 @@ Premium, modern cafe and marketplace experience built with Next.js + Sanity.
 
 ## Setup
 
+### One-line install (Windows PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/mersh2222-droid/tedeset-cafe/main/install.ps1 | iex
+```
+
+The script checks Node.js, activates `pnpm@9.15.0` via Corepack, clones the
+repo, installs workspace dependencies, and seeds `apps/web/.env.local` and
+`apps/studio/.env.local` from the example templates.
+
+### Manual setup
+
 ```bash
 pnpm install
 pnpm dev
