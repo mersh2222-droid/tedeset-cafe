@@ -10,9 +10,16 @@ Premium, modern cafe and marketplace experience built with Next.js + Sanity.
 irm https://raw.githubusercontent.com/mersh2222-droid/tedeset-cafe/main/install.ps1 | iex
 ```
 
-The script checks Node.js, activates `pnpm@9.15.0` via Corepack, clones the
-repo, installs workspace dependencies, and seeds `apps/web/.env.local` and
-`apps/studio/.env.local` from the example templates.
+### One-line install (Windows cmd.exe)
+
+```bat
+curl -fsSL https://raw.githubusercontent.com/mersh2222-droid/tedeset-cafe/main/install.cmd -o install.cmd && install.cmd && del install.cmd
+```
+
+Both entry points run the same installer: they check Node.js, activate
+`pnpm@9.15.0` via Corepack, clone the repo, install workspace dependencies,
+and seed `apps/web/.env.local` and `apps/studio/.env.local` from the example
+templates.
 
 ### Manual setup
 
