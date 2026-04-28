@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DashboardClient } from "./DashboardClient";
+import { PinGate } from "./components/PinGate";
 
 export const metadata: Metadata = {
   title: "Cash Handling Dashboard",
@@ -15,7 +16,9 @@ export default function DashboardPage() {
           Track and control daily cash &amp; card transactions
         </p>
       </div>
-      <DashboardClient />
+      <PinGate>
+        <DashboardClient />
+      </PinGate>
     </section>
   );
 }
