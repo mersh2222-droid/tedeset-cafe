@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 33% 97%;
+  --foreground: 222 35% 12%;
+  --primary: 24 38% 22%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 30 20% 94%;
+  --muted-foreground: 215 16% 38%;
+  --border: 20 14% 88%;
+  --accent: 38 55% 88%;
+  --accent-foreground: 222 35% 12%;
+  --success: 142 71% 29%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 40%;
+  --warning-foreground: 0 0% 100%;
+  --destructive: 0 72% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

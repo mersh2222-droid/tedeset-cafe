@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// UserRole: "CASHIER" | "OWNER"
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CASHIER")
+  createdAt    DateTime @default(now())
+
+  sessions          DaySession[]
+  noticesSigned     CashNotice[]
+  expensesSubmitted Expense[]    @relation("Submitter")
+  expensesApproved  Expense[]    @relation("Approver")
+}
+
+// SessionStatus: "OPEN" | "CLOSED"
+model DaySession {
+  id             Int      @id @default(autoincrement())
+  date           String   // "YYYY-MM-DD"
+  status         String   @default("OPEN")
+  openingBalance Float
+  cashierId      Int
+  cashier        User     @relation(fields: [cashierId], references: [id])
+  closedAt       DateTime?
+
+  totalSales  Float?
+  cashSales   Float?
+  salesNotes  String?
+
+  varianceNote     String?
+  varianceSignedBy String?
+  varianceSignedAt DateTime?
+
+  notices   CashNotice[]
+  expenses  Expense[]
+  cashCount CashCount?
+  report    DailyReport?
+
+  createdAt DateTime @default(now())
+
+  @@unique([date])
+}
+
+// NoticeDirection: "IN" | "OUT"
+model CashNotice {
+  id             Int        @id @default(autoincrement())
+  daySessionId   Int
+  daySession     DaySession @relation(fields: [daySessionId], references: [id])
+  direction      String     // "IN" | "OUT"
+  amount         Float
+  description    String
+  category       String
+  signedById     Int
+  signedBy       User       @relation(fields: [signedById], references: [id])
+  witnessName    String
+  verified       Boolean    @default(false)
+  verifiedAt     DateTime?
+  verifiedByName String?
+  printedAt      DateTime?
+  createdAt      DateTime   @default(now())
+}
+
+// ExpenseCategory: "SUPPLIES" | "UTILITIES" | "WAGES" | "MAINTENANCE" | "OTHER"
+// PaymentMethod:   "CASH" | "CARD" | "CHECK" | "OTHER"
+// ApprovalStatus:  "PENDING" | "APPROVED" | "REJECTED"
+model Expense {
+  id            Int        @id @default(autoincrement())
+  daySessionId  Int
+  daySession    DaySession @relation(fields: [daySessionId], references: [id])
+  amount        Float
+  description   String
+  category      String
+  paymentMethod String
+  receiptNote   String?
+  status        String     @default("PENDING")
+  submittedById Int
+  submittedBy   User       @relation("Submitter", fields: [submittedById], references: [id])
+  approvedById  Int?
+  approvedBy    User?      @relation("Approver", fields: [approvedById], references: [id])
+  approvedAt    DateTime?
+  rejectionNote String?
+  createdAt     DateTime   @default(now())
+}
+
+model CashCount {
+  id           Int        @id @default(autoincrement())
+  daySessionId Int        @unique
+  daySession   DaySession @relation(fields: [daySessionId], references: [id])
+
+  bills100 Int @default(0)
+  bills50  Int @default(0)
+  bills20  Int @default(0)
+  bills10  Int @default(0)
+  bills5   Int @default(0)
+  bills2   Int @default(0)
+  bills1   Int @default(0)
+
+  coins50 Int @default(0)
+  coins25 Int @default(0)
+  coins10 Int @default(0)
+  coins5  Int @default(0)
+  coins1  Int @default(0)
+
+  totalCounted        Float
+  expectedCash        Float
+  variance            Float
+  varianceExplanation String?
+  countedByName       String
+  createdAt           DateTime @default(now())
+}
+
+// ReportStatus: "DRAFT" | "FINAL"
+model DailyReport {
+  id             Int        @id @default(autoincrement())
+  daySessionId   Int        @unique
+  daySession     DaySession @relation(fields: [daySessionId], references: [id])
+  openingBalance Float
+  totalSales     Float
+  totalNoticeIn  Float
+  totalNoticeOut Float
+  totalExpenses  Float
+  expectedCash   Float
+  actualCash     Float
+  variance       Float
+  status         String     @default("DRAFT")
+  emailSentAt    DateTime?
+  emailSentTo    String?
+  createdAt      DateTime   @default(now())
+}

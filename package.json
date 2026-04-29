@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "dev:web": "cd apps/web && rm -rf .next && pnpm exec next dev --port 3000",
-    "dev:studio": "pnpm --filter studio dev"
+    "dev:studio": "pnpm --filter studio dev",
+    "dev:pos": "pnpm --filter pos dev"
   }
 }
 
