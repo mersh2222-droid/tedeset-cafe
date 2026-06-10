@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   FileText, Receipt, ClipboardList, TrendingUp, TrendingDown,
-  AlertTriangle, CheckCircle2, ArrowUpRight, ArrowDownRight,
-  DollarSign, ShoppingBag, Wallet, Clock
+  AlertTriangle, CheckCircle2, ArrowUpRight,
+  DollarSign, ShoppingBag, Wallet, Clock, Scale, ArrowRightLeft
 } from "lucide-react";
-import { computeExpectedCash } from "@/lib/calculations";
+import { computeExpectedCash, computeCashLedger } from "@/lib/calculations";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +32,13 @@ export default async function DashboardPage() {
 
   if (!session || session.status === "CLOSED") redirect("/open");
 
+  const recentClosed = await db.daySession.findMany({
+    where: { status: "CLOSED", date: { not: today } },
+    orderBy: { date: "desc" },
+    take: 5,
+    include: { report: true }
+  });
+
   const pendingExpenses = session.expenses.filter((e) => e.status === "PENDING");
   const approvedExpenses = session.expenses.filter((e) => e.status === "APPROVED");
   const unverifiedNotices = session.notices.filter((n) => !n.verified);
@@ -43,31 +50,8 @@ export default async function DashboardPage() {
   const totalIn = session.openingBalance + (session.cashSales ?? 0) + noticeIn;
   const totalOut = noticeOut + cashExpenses;
 
-  // Combined activity feed: last 6 items
-  const activity = [
-    ...session.notices.map((n) => ({
-      id: `n-${n.id}`,
-      type: "notice" as const,
-      direction: n.direction,
-      amount: n.amount,
-      label: n.description,
-      sub: n.category,
-      at: n.createdAt,
-      status: n.verified ? "verified" : "unverified"
-    })),
-    ...session.expenses.map((e) => ({
-      id: `e-${e.id}`,
-      type: "expense" as const,
-      direction: "OUT" as const,
-      amount: e.amount,
-      label: e.description,
-      sub: `${e.category} · ${e.paymentMethod} · by ${e.submittedBy.name}`,
-      at: e.createdAt,
-      status: e.status.toLowerCase()
-    }))
-  ]
-    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
-    .slice(0, 6);
+  // Chronological cash ledger with running balances
+  const ledger = computeCashLedger(session, session.notices, session.expenses).reverse();
 
   const alerts = [
     pendingExpenses.length > 0 && {
@@ -214,23 +198,24 @@ export default async function DashboardPage() {
 
       {/* Activity feed + counts side by side */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {/* Activity feed */}
+        {/* Cash ledger */}
         <div className="sm:col-span-2 rounded-xl border border-border bg-white overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-            <p className="text-sm font-semibold">Today&apos;s Activity</p>
-            <span className="text-xs text-muted-foreground">{session.notices.length + session.expenses.length} total</span>
+            <p className="text-sm font-semibold">Cash Ledger Today</p>
+            <span className="text-xs text-muted-foreground">{ledger.length} entries</span>
           </div>
-          {activity.length === 0 ? (
-            <p className="px-4 py-8 text-center text-sm text-muted-foreground">No activity yet today.</p>
+          {ledger.length === 0 ? (
+            <p className="px-4 py-8 text-center text-sm text-muted-foreground">No cash activity yet today.</p>
           ) : (
-            <div className="divide-y divide-border">
-              {activity.map((item) => (
+            <div className="divide-y divide-border max-h-[420px] overflow-y-auto">
+              {ledger.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 px-4 py-3">
                   <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
                     item.direction === "IN" ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
                   }`}>
-                    {item.direction === "IN"
-                      ? <TrendingUp className="h-4 w-4" />
+                    {item.type === "opening" ? <Wallet className="h-4 w-4" />
+                      : item.type === "sales" ? <ShoppingBag className="h-4 w-4" />
+                      : item.direction === "IN" ? <TrendingUp className="h-4 w-4" />
                       : <TrendingDown className="h-4 w-4" />}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -243,23 +228,25 @@ export default async function DashboardPage() {
                     </p>
                     <p className="text-[10px] text-muted-foreground capitalize">{item.status}</p>
                   </div>
+                  <div className="text-right shrink-0 w-24 border-l border-border pl-3">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Balance</p>
+                    <p className="text-sm font-semibold">{formatCurrency(item.balance)}</p>
+                  </div>
                 </div>
               ))}
             </div>
           )}
-          {activity.length > 0 && (
-            <div className="grid grid-cols-2 divide-x divide-border border-t border-border">
-              <Link href="/notices" className="py-2.5 text-center text-xs font-medium text-muted-foreground hover:bg-muted transition">
-                View Notices →
-              </Link>
-              <Link href="/expenses" className="py-2.5 text-center text-xs font-medium text-muted-foreground hover:bg-muted transition">
-                View Expenses →
-              </Link>
-            </div>
-          )}
+          <div className="grid grid-cols-2 divide-x divide-border border-t border-border">
+            <Link href="/notices" className="py-2.5 text-center text-xs font-medium text-muted-foreground hover:bg-muted transition">
+              View Notices →
+            </Link>
+            <Link href="/expenses" className="py-2.5 text-center text-xs font-medium text-muted-foreground hover:bg-muted transition">
+              View Expenses →
+            </Link>
+          </div>
         </div>
 
-        {/* Right column: counts */}
+        {/* Right column: counts + reconciliation */}
         <div className="space-y-3">
           <CountCard
             href="/notices"
@@ -277,6 +264,66 @@ export default async function DashboardPage() {
             subColor={pendingExpenses.length > 0 ? "warning" : "success"}
             icon={<Receipt className="h-5 w-5 text-primary" />}
           />
+
+          {/* Reconciliation status */}
+          <div className="rounded-xl border border-border bg-white p-4">
+            <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <Scale className="h-3.5 w-3.5" /> Reconciliation
+            </p>
+            {session.cashCount ? (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Expected</span>
+                  <span className="font-medium">{formatCurrency(session.cashCount.expectedCash)}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Counted</span>
+                  <span className="font-medium">{formatCurrency(session.cashCount.totalCounted)}</span>
+                </div>
+                <div className={`flex items-center justify-between text-sm font-semibold pt-2 border-t border-border ${
+                  session.cashCount.variance === 0 ? "text-success" : Math.abs(session.cashCount.variance) <= 5 ? "text-warning" : "text-destructive"
+                }`}>
+                  <span>Variance</span>
+                  <span>{session.cashCount.variance > 0 ? "+" : ""}{formatCurrency(session.cashCount.variance)}</span>
+                </div>
+                {session.cashCount.variance !== 0 && (
+                  <p className={`text-xs ${session.varianceSignedBy ? "text-success" : "text-warning"}`}>
+                    {session.varianceSignedBy
+                      ? `Signed off by ${session.varianceSignedBy}`
+                      : "Awaiting explanation & sign-off"}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Not yet counted today. Reconciliation runs during End of Day.</p>
+            )}
+
+            {recentClosed.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-border">
+                <p className="mb-2 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                  <ArrowRightLeft className="h-3 w-3" /> Recent variance trend
+                </p>
+                <div className="space-y-1.5">
+                  {recentClosed.map((s) => (
+                    <div key={s.id} className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground">{formatDate(s.date).split(",")[0]}</span>
+                      {s.report ? (
+                        <span className={
+                          s.report.variance === 0 ? "text-success font-medium"
+                            : Math.abs(s.report.variance) <= 5 ? "text-warning font-medium"
+                            : "text-destructive font-medium"
+                        }>
+                          {s.report.variance > 0 ? "+" : ""}{formatCurrency(s.report.variance)}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* EOD progress */}
           <div className="rounded-xl border border-border bg-white p-4">
